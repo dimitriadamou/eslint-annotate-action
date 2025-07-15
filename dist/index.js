@@ -56035,11 +56035,9 @@ async function addComment(report, checkId) {
     else {
         icon = '✅';
     }
-    let body = `## ${icon} ESlint summary\n\n${report.summary}\n\n ${linkPre}${checkId}${linkPost}`;
     const annotations = [...report.annotations].splice(0, 50);
-    annotations.forEach((annotation) => {
-        body += `\n\n${annotation.path} - ${annotation.message}`;
-    });
+    let body = `## ${icon} ESlint summary\n\n${report.summary}\n\n ${linkPre}${checkId}${linkPost}`;
+    body += annotations.map((annotation) => `\n\n${annotation.path} - ${annotation.message}`).join('');
     if (report.annotations.length > 50) {
         body += `\n\n...and ${report.annotations.length - 50} more...`;
     }
