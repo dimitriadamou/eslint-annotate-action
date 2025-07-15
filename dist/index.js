@@ -56035,7 +56035,14 @@ async function addComment(report, checkId) {
     else {
         icon = '✅';
     }
-    const body = `## ${icon} ESlint summary\n\n${report.summary}\n\n ${linkPre}${checkId}${linkPost}`;
+    let body = `## ${icon} ESlint summary\n\n${report.summary}\n\n ${linkPre}${checkId}${linkPost}`;
+    const annotations = [...report.annotations].splice(0, 50);
+    annotations.forEach((annotation) => {
+        body += `\n\n${annotation.path} - ${annotation.message}`;
+    });
+    if (report.annotations.length > 50) {
+        body += `\n\n...and ${report.annotations.length - 50} more...`;
+    }
     // Delete an existing comment that matches the first part of the link
     // The checkId will be different on every run, so qwe cannot use it to search for the link
     await deleteComment(linkPre);
